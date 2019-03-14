@@ -1,4 +1,15 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+
+import TextField from '@material-ui/core/TextField';
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+
+
+const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+];
 
 
 class App extends Component {
@@ -18,6 +29,10 @@ class App extends Component {
 
 
     handleChange(e) {
+        // const { name } = this.state;
+        // user[e.target.name] = e.target.value;
+        // this.setState({ name });
+
         const { name, value } = e.target;
         this.setState({
             [name]: value
@@ -99,8 +114,13 @@ class App extends Component {
             });
     }
 
+    componentWillMount() {
+        ValidatorForm.addValidationRule("isValidName", (string) => /[a-zA-Z \u00E0-\u00FC]{1,20}/g.test(string));
+    }
+
     componentDidMount() {
         this.fetchUsers();
+
     }
 
     fetchUsers() {
@@ -113,6 +133,7 @@ class App extends Component {
     }
 
     render() {
+
         return (
             <div>
                 {/* NAVIGATION COMPONENT*/}
@@ -129,25 +150,58 @@ class App extends Component {
                         <div className="col s5">
                             <div className="card">
                                 <div className="card-content">
-                                    <form onSubmit={this.addUser}>
+                                    <ValidatorForm onSubmit={this.addUser}>
                                         <div className="row">
                                             <div className="input-field col s12">
-                                                <input name="name" onChange={this.handleChange} value={this.state.name} type="text" placeholder="Nombre" required/>
+                                                <TextValidator
+                                                    label="Nombre"
+                                                    onChange={this.handleChange}
+                                                    name="name"
+                                                    value={this.state.name}
+                                                    validators={['required', 'isValidName']}
+                                                    errorMessages={['this field is required', 'Name is not valid']}
+                                                />
+
+                                                {/* <input name="name" onChange={this.handleChange} value={this.state.name} type="text" placeholder="Nombre" required /> */}
                                             </div>
                                         </div><div className="row">
                                             <div className="input-field col s12">
-                                                <input name="lastName" onChange={this.handleChange} value={this.state.lastName} type="text" placeholder="Apellido" required />
+                                                <TextValidator
+                                                    label="Apellido"
+                                                    onChange={this.handleChange}
+                                                    name="lastName"
+                                                    value={this.state.lastName}
+                                                    validators={['required', 'isValidName']}
+                                                    errorMessages={['this field is required', 'Last name is not valid']}
+                                                />
+                                                {/* <input name="lastName" onChange={this.handleChange} value={this.state.lastName} type="text" placeholder="Apellido" required /> */}
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div className="input-field col s12">
-                                                <input name="sex" onChange={this.handleChange} value={this.state.sex} type="text" placeholder="Sexo" required/>
+
+
+
+                                                {/* <select value={this.state.sex} onChange={this.handleChange2}>
+                                                    <option value="M">Masculino</option>
+                                                    <option value="F">Femenino</option>
+                                                </select> */}
+                                                
+                                                <TextValidator
+                                                    label="Sexo"
+                                                    onChange={this.handleChange}
+                                                    name="sex"
+                                                    value={this.state.sex}
+                                                    validators={['required', 'isValidName']}
+                                                    errorMessages={['this field is required', 'Sex is not valid']}
+                                                />
+                                                {/* <input name="sex" onChange={this.handleChange} value={this.state.sex} type="text" placeholder="Sexo" required /> */}
                                             </div>
                                         </div>
-
-
-                                        <button type="submit" className="btn light-blue darken-4">Enviar</button>
-                                    </form>
+                                        <button type="submit" className="btn light-blue darken-4">
+                                            Enviar
+                                        </button>
+                                    </ValidatorForm>
                                 </div>
                             </div>
                         </div>
